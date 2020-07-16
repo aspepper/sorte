@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "sorte.console": {
+      "commandName": "Project",
+      "commandLineArgs": "count"
+    }
+  }
+}

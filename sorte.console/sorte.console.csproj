@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200715175042_CidadesMegasena.cs" />
     <Compile Remove="Migrations\20200715175042_CidadesMegasena.Designer.cs" />
+    <Compile Remove="Migrations\20200716193656_CriacaoTabelaEstatisticaMegasena.cs" />
+    <Compile Remove="Migrations\20200716193656_CriacaoTabelaEstatisticaMegasena.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
