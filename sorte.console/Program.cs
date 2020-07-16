@@ -6,6 +6,8 @@ using System.IO.Compression;
 using System.Collections.Generic;
 using System.Text;
 using HtmlAgilityPack;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace sorte.console
 {
@@ -14,37 +16,52 @@ namespace sorte.console
         static void Main(string[] args)
         {
 
-            var downloadFile = getFileFromURL("http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip", "Megasena");
-            string fileName = downloadFile.Result;
+            if (args.Length==0) { return;  }
 
-            using ZipArchive archive = ZipFile.OpenRead(fileName);
-            var extractPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            extractPath += "\\extract";
-            if (!Directory.Exists(extractPath))
+            switch (args[0])
             {
-                Directory.CreateDirectory(extractPath);
+                case "load":
+                    if (args[1] == "mega")
+                    {
+                        var downloadFile = GetFileFromURL("http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip", "Megasena");
+                        string fileName = downloadFile.Result;
+
+                        using ZipArchive archive = ZipFile.OpenRead(fileName);
+                        var extractPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                        extractPath += "\\extract";
+                        if (!Directory.Exists(extractPath))
+                        {
+                            Directory.CreateDirectory(extractPath);
+                        }
+
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            if (entry.FullName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase))
+                            {
+                                string fileExt = Path.GetExtension(entry.FullName);
+                                string fileNoExt = Path.GetFileNameWithoutExtension(entry.FullName);
+                                string destinationPath = Path.GetFullPath(Path.Combine(extractPath, string.Format("{0}{1}{2}", fileNoExt, DateTime.Now.ToString("yyyyMMddHHmmss"), fileExt)));
+
+                                if (destinationPath.StartsWith(extractPath, StringComparison.Ordinal))
+                                    entry.ExtractToFile(destinationPath);
+
+                                ExtractNumbersFromFile(destinationPath);
+
+                            }
+                        }
+                    }
+                    break;
+                case "count":
+                    break;
             }
 
-            foreach (ZipArchiveEntry entry in archive.Entries)
-            {
-                if (entry.FullName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase))
-                {
-                    string fileExt = Path.GetExtension(entry.FullName);
-                    string fileNoExt = Path.GetFileNameWithoutExtension(entry.FullName);
-                    string destinationPath = Path.GetFullPath(Path.Combine(extractPath, string.Format("{0}{1}{2}", fileNoExt, DateTime.Now.ToString("yyyyMMddHHmmss"), fileExt)));
-
-
-                    if (destinationPath.StartsWith(extractPath, StringComparison.Ordinal))
-                        entry.ExtractToFile(destinationPath);
-
-                    extractNumbersFromFile(destinationPath);
-
-                }
-            }
         }
 
-        static async Task<string> getFileFromURL(string url, string filename)
+        #region "load mega"
+        static async Task<string> GetFileFromURL(string url, string filename)
         {
+
+
             var downloadFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             downloadFolder += "\\download";
             if (!Directory.Exists(downloadFolder))
@@ -78,13 +95,11 @@ namespace sorte.console
         }
 
 
-        static List<string> scrap = new List<string>();
-
-        static private void extractNumbersFromFile(string filename)
+        static private void ExtractNumbersFromFile(string filename)
         {
 
             var htmlDoc = new HtmlDocument();
-            var enc = htmlDoc.DetectEncoding(filename);
+            var enc = Encoding.GetEncoding(28591);
             htmlDoc.Load(filename, enc);
             var webtrs = htmlDoc.DocumentNode.SelectNodes("//tr");
             int count = 1;
@@ -101,9 +116,14 @@ namespace sorte.console
                 int i = 0;
                 double db;
                 MegasenaCidadeRecord cidade = new MegasenaCidadeRecord();
+                var maxCols = 21;
                 foreach (var tds in webtds)
                 {
-                    string text = tds.InnerText;
+                    string text = tds.InnerText.Replace("&nbsp", " ").Trim();
+
+                    if (cols == 0 && !int.TryParse(text, out _)) { cols = 10; maxCols = 12; } // Cidade (Coluna)
+                    if (cols == 1 && !DateTime.TryParse(text, out _)) { cols = 11; maxCols = 12; } // UF (Coluna)
+
                     switch (cols)
                     {
                         case 0: // Concurso
@@ -170,28 +190,75 @@ namespace sorte.console
                         case 20: if (double.TryParse(text, out db)) { record.AcumuladoVirada = db; } break;
                     }
                     cols++;
-                    scrap.Add(text);
-                    sbLine.Append(text + "; ");
-                    if (cols == 21)
+                    if (cols == maxCols)
                     {
-                        if (i != 0)
+                        Megasenas.Add(record);
+                        using var context = new SorteContext();
+                        var recordMS = context
+                            .Megasenas
+                            .Include(e => e.Cidades)
+                            .Include(e => e.NumerosSorteados)
+                            .Where(e => e.Concurso == concursoCorrente).FirstOrDefault();
+                        var AddFlag = recordMS == null;
+
+                        if (AddFlag)
                         {
-                            Megasenas.Add(record);
+                            recordMS = new Megasena()
+                            {
+                                DataConcurso = record.DataConcurso,
+                                Concurso = record.Concurso,
+                                ArredacaoTotal = record.ArredacaoTotal,
+                                Ganhadores = record.Ganhadores,
+                                Rateio = record.Rateio,
+                                GanhadoresQuina = record.GanhadoresQuina,
+                                RateioQuina = record.RateioQuina,
+                                GanhadoresQuadra = record.GanhadoresQuadra,
+                                RateioQuadra = record.RateioQuadra,
+                                Acumulado = record.Acumulado,
+                                ValorAcumulado = record.ValorAcumulado,
+                                EstimativaPremio = record.EstimativaPremio,
+                                AcumuladoVirada = record.AcumuladoVirada
+                            };
+
+                            foreach (var nrs in record.NumerosSorteados)
+                            {
+                                recordMS.NumerosSorteados.Add(new Sorteados()
+                                {
+                                    Numero = nrs.Numero,
+                                    Ordem = nrs.Ordem
+                                });
+                            }
+
                         }
-                        else
+
+                        foreach (var cds in record.Cidades)
                         {
-                            //Cidades apenas
+                            if (cds.Cidade.Trim().Length + cds.UF.Trim().Length > 0)
+                            {
+                                if (recordMS.Cidades.Where(e => e.Cidade == cds.Cidade && e.UF == cds.UF).FirstOrDefault() == null)
+                                {
+                                    recordMS.Cidades.Add(new MegasenaCidade()
+                                    {
+                                        Cidade = cds.Cidade,
+                                        UF = cds.UF
+                                    });
+                                }
+                            }
                         }
+
+                        if (AddFlag) { context.Megasenas.Add(recordMS); }
+                        else { context.Megasenas.Update(recordMS); }
+                        context.SaveChanges();
+
                         count++;
                         cols = 0;
-                        sbLine = new StringBuilder();
                         if (cols <= 10)
                         {
                             record = new MegasenaRecord();
                         }
+                        maxCols = 21;
                     }
                 }
-                Console.WriteLine(string.Format("{0}-{1}", count, sbLine.ToString()));
                 if (count > 10) { break; }
             }
 
@@ -257,6 +324,9 @@ namespace sorte.console
             public string UF { get; set; }
 
         }
+        #endregion
+
+
 
     }
 }
