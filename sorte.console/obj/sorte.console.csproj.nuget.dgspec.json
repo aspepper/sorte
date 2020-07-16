@@ -1,32 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projetos\\acades\\sorte\\sorte.console\\sorte.console.csproj": {}
+    "/Users/alexsandro.pimenta/Projetos/acades/sorte/sorte.console/sorte.console.csproj": {}
   },
   "projects": {
-    "C:\\Projetos\\acades\\sorte\\sorte.console\\sorte.console.csproj": {
+    "/Users/alexsandro.pimenta/Projetos/acades/sorte/sorte.console/sorte.console.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projetos\\acades\\sorte\\sorte.console\\sorte.console.csproj",
+        "projectUniqueName": "/Users/alexsandro.pimenta/Projetos/acades/sorte/sorte.console/sorte.console.csproj",
         "projectName": "sorte.console",
-        "projectPath": "C:\\Projetos\\acades\\sorte\\sorte.console\\sorte.console.csproj",
-        "packagesPath": "C:\\Users\\tecnica4\\.nuget\\packages\\",
-        "outputPath": "C:\\Projetos\\acades\\sorte\\sorte.console\\obj\\",
+        "projectPath": "/Users/alexsandro.pimenta/Projetos/acades/sorte/sorte.console/sorte.console.csproj",
+        "packagesPath": "/Users/alexsandro.pimenta/.nuget/packages/",
+        "outputPath": "/Users/alexsandro.pimenta/Projetos/acades/sorte/sorte.console/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\tecnica4\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "/Users/alexsandro.pimenta/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/Users/alexsandro.pimenta/Git/.nuget/packages": {},
+          "https://agencianetza.pkgs.visualstudio.com/_packaging/Netza/nuget/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -73,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.301/RuntimeIdentifierGraph.json"
         }
       }
     }
