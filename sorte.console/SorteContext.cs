@@ -18,6 +18,7 @@ namespace sorte.console
         public DbSet<Megasena> Megasenas { get; set; }
         public DbSet<Sorteados> Sorteados { get; set; }
         public DbSet<MegasenaCidade> MegasenaCidades { get; set; }
+        public DbSet<EstatisticaMegasena> EstatisticaMegasenas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +30,7 @@ namespace sorte.console
             builder.Entity<Megasena>().HasMany(n => n.NumerosSorteados).WithOne(n => n.MegaSena);
             builder.Entity<MegasenaCidade>().HasOne(c => c.MegasenaConcurso).WithMany(m => m.Cidades);
             builder.Entity<Megasena>().HasMany(c => c.Cidades).WithOne(m => m.MegasenaConcurso);
+            builder.Entity<EstatisticaMegasena>();
 
         }
 
