@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sorte.console;
 
 namespace sorte.console.Migrations
 {
     [DbContext(typeof(SorteContext))]
-    partial class SorteContextModelSnapshot : ModelSnapshot
+    [Migration("20200717000039_CreatingMegasenaCounterTable")]
+    partial class CreatingMegasenaCounterTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -19,6 +19,7 @@ namespace sorte.console
         public DbSet<Sorteados> Sorteados { get; set; }
         public DbSet<MegasenaCidade> MegasenaCidades { get; set; }
         public DbSet<EstatisticaMegasena> EstatisticaMegasenas { get; set; }
+        public DbSet<MegasenaCounter> MegasenaCounters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,14 +32,15 @@ namespace sorte.console
             builder.Entity<MegasenaCidade>().HasOne(c => c.MegasenaConcurso).WithMany(m => m.Cidades);
             builder.Entity<Megasena>().HasMany(c => c.Cidades).WithOne(m => m.MegasenaConcurso);
             builder.Entity<EstatisticaMegasena>();
+            builder.Entity<MegasenaCounter>();
 
         }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\;Database=Sorte;Trusted_Connection=True;MultipleActiveResultSets=true"); // windows
-            //optionsBuilder.UseSqlServer(@"Server=localhost;Database=Sorte;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=l0g1t3ch;"); // Mac
+            //optionsBuilder.UseSqlServer(@"Server=.\;Database=Sorte;Trusted_Connection=True;MultipleActiveResultSets=true"); // windows
+            optionsBuilder.UseSqlServer(@"Server=localhost;Database=Sorte;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=L0g1t3ch#1972;"); // Mac
         }
 
 
