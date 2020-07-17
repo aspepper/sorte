@@ -119,13 +119,11 @@ namespace sorte.console
             htmlDoc.Load(filename, enc);
             var webtrs = htmlDoc.DocumentNode.SelectNodes("//tr");
             int count = 0;
-            StringBuilder sbLine;
             var Megasenas = new List<MegasenaRecord>();
             foreach (var trs in webtrs)
             {
                 var webtds = trs.SelectNodes("//td");
                 count++;
-                sbLine = new StringBuilder();
                 int cols = 0;
                 var record = new MegasenaRecord();
                 int concursoCorrente = 0;
@@ -219,6 +217,8 @@ namespace sorte.console
 
                         if (AddFlag)
                         {
+                            Console.WriteLine(string.Format("Processando Data {0} - Concurso {1}", record.DataConcurso, concursoCorrente));
+
                             recordMS = new Megasena()
                             {
                                 DataConcurso = record.DataConcurso,
@@ -491,81 +491,83 @@ namespace sorte.console
                                             .MegasenaCounters
                                             .Where(e => e.DataConcurso == ms.DataConcurso && e.Numero == i)
                                             .FirstOrDefault();
-                    var flagAdd = estatistica == null;
-                    if (flagAdd) { estatistica = new MegasenaCounter(); }
-                    estatistica.DataConcurso = ms.DataConcurso;
-                    estatistica.Numero = i;
-                    estatistica.Quantidade = i switch
+                    if (estatistica == null)
                     {
-                        1 => megasenaDezenas.Dez01,
-                        2 => megasenaDezenas.Dez02,
-                        3 => megasenaDezenas.Dez03,
-                        4 => megasenaDezenas.Dez04,
-                        5 => megasenaDezenas.Dez05,
-                        6 => megasenaDezenas.Dez06,
-                        7 => megasenaDezenas.Dez07,
-                        8 => megasenaDezenas.Dez08,
-                        9 => megasenaDezenas.Dez09,
-                        10 => megasenaDezenas.Dez10,
-                        11 => megasenaDezenas.Dez11,
-                        12 => megasenaDezenas.Dez12,
-                        13 => megasenaDezenas.Dez13,
-                        14 => megasenaDezenas.Dez14,
-                        15 => megasenaDezenas.Dez15,
-                        16 => megasenaDezenas.Dez16,
-                        17 => megasenaDezenas.Dez17,
-                        18 => megasenaDezenas.Dez18,
-                        19 => megasenaDezenas.Dez19,
-                        20 => megasenaDezenas.Dez20,
-                        21 => megasenaDezenas.Dez21,
-                        22 => megasenaDezenas.Dez22,
-                        23 => megasenaDezenas.Dez23,
-                        24 => megasenaDezenas.Dez24,
-                        25 => megasenaDezenas.Dez25,
-                        26 => megasenaDezenas.Dez26,
-                        27 => megasenaDezenas.Dez27,
-                        28 => megasenaDezenas.Dez28,
-                        29 => megasenaDezenas.Dez29,
-                        30 => megasenaDezenas.Dez30,
-                        31 => megasenaDezenas.Dez31,
-                        32 => megasenaDezenas.Dez32,
-                        33 => megasenaDezenas.Dez33,
-                        34 => megasenaDezenas.Dez34,
-                        35 => megasenaDezenas.Dez35,
-                        36 => megasenaDezenas.Dez36,
-                        37 => megasenaDezenas.Dez37,
-                        38 => megasenaDezenas.Dez38,
-                        39 => megasenaDezenas.Dez39,
-                        40 => megasenaDezenas.Dez40,
-                        41 => megasenaDezenas.Dez41,
-                        42 => megasenaDezenas.Dez42,
-                        43 => megasenaDezenas.Dez43,
-                        44 => megasenaDezenas.Dez44,
-                        45 => megasenaDezenas.Dez45,
-                        46 => megasenaDezenas.Dez46,
-                        47 => megasenaDezenas.Dez47,
-                        48 => megasenaDezenas.Dez48,
-                        49 => megasenaDezenas.Dez49,
-                        50 => megasenaDezenas.Dez50,
-                        51 => megasenaDezenas.Dez51,
-                        52 => megasenaDezenas.Dez52,
-                        53 => megasenaDezenas.Dez53,
-                        54 => megasenaDezenas.Dez54,
-                        55 => megasenaDezenas.Dez55,
-                        56 => megasenaDezenas.Dez56,
-                        57 => megasenaDezenas.Dez57,
-                        58 => megasenaDezenas.Dez58,
-                        59 => megasenaDezenas.Dez59,
-                        60 => megasenaDezenas.Dez60,
-                        _ => 0
-                    };
+                        dbcontext.MegasenaCounters.Add(
+                            new MegasenaCounter
+                            {
+                                DataConcurso = ms.DataConcurso,
+                                Numero = i,
+                                Quantidade = i switch
+                                {
+                                    1 => megasenaDezenas.Dez01,
+                                    2 => megasenaDezenas.Dez02,
+                                    3 => megasenaDezenas.Dez03,
+                                    4 => megasenaDezenas.Dez04,
+                                    5 => megasenaDezenas.Dez05,
+                                    6 => megasenaDezenas.Dez06,
+                                    7 => megasenaDezenas.Dez07,
+                                    8 => megasenaDezenas.Dez08,
+                                    9 => megasenaDezenas.Dez09,
+                                    10 => megasenaDezenas.Dez10,
+                                    11 => megasenaDezenas.Dez11,
+                                    12 => megasenaDezenas.Dez12,
+                                    13 => megasenaDezenas.Dez13,
+                                    14 => megasenaDezenas.Dez14,
+                                    15 => megasenaDezenas.Dez15,
+                                    16 => megasenaDezenas.Dez16,
+                                    17 => megasenaDezenas.Dez17,
+                                    18 => megasenaDezenas.Dez18,
+                                    19 => megasenaDezenas.Dez19,
+                                    20 => megasenaDezenas.Dez20,
+                                    21 => megasenaDezenas.Dez21,
+                                    22 => megasenaDezenas.Dez22,
+                                    23 => megasenaDezenas.Dez23,
+                                    24 => megasenaDezenas.Dez24,
+                                    25 => megasenaDezenas.Dez25,
+                                    26 => megasenaDezenas.Dez26,
+                                    27 => megasenaDezenas.Dez27,
+                                    28 => megasenaDezenas.Dez28,
+                                    29 => megasenaDezenas.Dez29,
+                                    30 => megasenaDezenas.Dez30,
+                                    31 => megasenaDezenas.Dez31,
+                                    32 => megasenaDezenas.Dez32,
+                                    33 => megasenaDezenas.Dez33,
+                                    34 => megasenaDezenas.Dez34,
+                                    35 => megasenaDezenas.Dez35,
+                                    36 => megasenaDezenas.Dez36,
+                                    37 => megasenaDezenas.Dez37,
+                                    38 => megasenaDezenas.Dez38,
+                                    39 => megasenaDezenas.Dez39,
+                                    40 => megasenaDezenas.Dez40,
+                                    41 => megasenaDezenas.Dez41,
+                                    42 => megasenaDezenas.Dez42,
+                                    43 => megasenaDezenas.Dez43,
+                                    44 => megasenaDezenas.Dez44,
+                                    45 => megasenaDezenas.Dez45,
+                                    46 => megasenaDezenas.Dez46,
+                                    47 => megasenaDezenas.Dez47,
+                                    48 => megasenaDezenas.Dez48,
+                                    49 => megasenaDezenas.Dez49,
+                                    50 => megasenaDezenas.Dez50,
+                                    51 => megasenaDezenas.Dez51,
+                                    52 => megasenaDezenas.Dez52,
+                                    53 => megasenaDezenas.Dez53,
+                                    54 => megasenaDezenas.Dez54,
+                                    55 => megasenaDezenas.Dez55,
+                                    56 => megasenaDezenas.Dez56,
+                                    57 => megasenaDezenas.Dez57,
+                                    58 => megasenaDezenas.Dez58,
+                                    59 => megasenaDezenas.Dez59,
+                                    60 => megasenaDezenas.Dez60,
+                                    _ => 0
+                                }
+                            });
 
-                    if (flagAdd) { dbcontext.MegasenaCounters.Add(estatistica); }
-                    else { dbcontext.MegasenaCounters.Update(estatistica); }
-
-                    dbcontext.SaveChanges(true);
+                    }
 
                 }
+                dbcontext.SaveChanges(true);
 
                 //estatistica.DataConcurso = ms.DataConcurso;
                 //estatistica.QuantDez01 = megasenaDezenas.Dez01;
@@ -637,7 +639,8 @@ namespace sorte.console
 
         }
 
+        #endregion
+
     }
-    #endregion
 
 }
