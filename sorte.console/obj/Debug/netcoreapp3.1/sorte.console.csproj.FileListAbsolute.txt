@@ -120,3 +120,4 @@ C:\Projetos\acades\sorte\sorte.console\obj\Debug\netcoreapp3.1\sorte.console.csp
 C:\Projetos\acades\sorte\sorte.console\obj\Debug\netcoreapp3.1\sorte.console.dll
 C:\Projetos\acades\sorte\sorte.console\obj\Debug\netcoreapp3.1\sorte.console.pdb
 C:\Projetos\acades\sorte\sorte.console\obj\Debug\netcoreapp3.1\sorte.console.genruntimeconfig.cache
+C:\Projetos\acades\sorte\sorte.console\obj\Debug\netcoreapp3.1\sorte.console.csprojAssemblyReference.cache

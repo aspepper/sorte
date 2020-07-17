@@ -412,10 +412,10 @@ namespace sorte.console
         {
             var megasenaDezenas = new MegasenaNumbers();
 
+            Console.WriteLine("Inicio do Processo de Count...");
             using var context = new SorteContext();
             foreach (var ms in context.Megasenas.Include(m => m.NumerosSorteados).OrderBy(e => e.DataConcurso))
             {
-                Console.WriteLine(string.Format("Processando Concurso {0}", ms.Concurso));
                 foreach (var numero in ms.NumerosSorteados)
                 {
                     if (numero.Numero == 1) { megasenaDezenas.Dez01++; }
@@ -493,6 +493,8 @@ namespace sorte.console
                                             .FirstOrDefault();
                     if (estatistica == null)
                     {
+                        Console.WriteLine(string.Format("Processando Concurso {0}", ms.Concurso));
+
                         dbcontext.MegasenaCounters.Add(
                             new MegasenaCounter
                             {
@@ -636,6 +638,8 @@ namespace sorte.console
 
                 //dbcontext.SaveChanges(true);
             }
+            Console.WriteLine("Finalizando o Processo de Count.");
+
 
         }
 
