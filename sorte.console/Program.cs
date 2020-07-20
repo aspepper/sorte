@@ -120,6 +120,8 @@ namespace sorte.console
             var webtrs = htmlDoc.DocumentNode.SelectNodes("//tr");
             int count = 0;
             var Megasenas = new List<MegasenaRecord>();
+            var beginTime = DateTime.Now;
+            Console.WriteLine(string.Format("Iniciando processo de extração dos números às {0}", beginTime.ToString("HH:mm:ss")));
             foreach (var trs in webtrs)
             {
                 var webtds = trs.SelectNodes("//td");
@@ -189,7 +191,7 @@ namespace sorte.console
                         //Ganhadores_Quina
                         case 13: if (int.TryParse(text, out i)) { record.GanhadoresQuina = i; } break;
                         //Rateio_Quina
-                        case 14: if (double.TryParse(text, out db)) { record.RateioQuadra = db; } break;
+                        case 14: if (double.TryParse(text, out db)) { record.RateioQuina = db; } break;
                         //Ganhadores_Quadra
                         case 15: if (int.TryParse(text, out i)) { record.GanhadoresQuadra = i; } break;
                         //Rateio_Quadra
@@ -214,6 +216,7 @@ namespace sorte.console
                             .Include(e => e.NumerosSorteados)
                             .Where(e => e.Concurso == concursoCorrente).FirstOrDefault();
                         var AddFlag = recordMS == null;
+                        var UpdFlag = false;
 
                         if (AddFlag)
                         {
@@ -253,18 +256,21 @@ namespace sorte.console
                             {
                                 if (recordMS.Cidades.Where(e => e.Cidade == cds.Cidade && e.UF == cds.UF).FirstOrDefault() == null)
                                 {
+                                    if (!AddFlag) { Console.WriteLine(string.Format("Processando Data {0} - Concurso {1}", record.DataConcurso, concursoCorrente)); }
                                     recordMS.Cidades.Add(new MegasenaCidade()
                                     {
                                         Cidade = cds.Cidade,
                                         UF = cds.UF
                                     });
+                                    UpdFlag = true;
                                 }
                             }
                         }
 
                         if (AddFlag) { context.Megasenas.Add(recordMS); }
-                        else { context.Megasenas.Update(recordMS); }
-                        context.SaveChanges();
+                        else
+                        if (UpdFlag) { context.Megasenas.Update(recordMS); }
+                        if (AddFlag || UpdFlag ) { context.SaveChanges(); }
 
                         count++;
                         cols = 0;
@@ -275,8 +281,11 @@ namespace sorte.console
                         maxCols = 21;
                     }
                 }
-                if (count > 10) { break; }
+                break;
             }
+            Console.WriteLine(string.Format("Finalizando processo de extração dos números às {0}, levou {1} tempo de execução.",
+                DateTime.Now.ToString("HH:mm:ss"),
+                DateTime.Now.Subtract(beginTime).ToString()));
 
             htmlDoc.OptionAutoCloseOnEnd = true;
         }
@@ -412,7 +421,8 @@ namespace sorte.console
         {
             var megasenaDezenas = new MegasenaNumbers();
 
-            Console.WriteLine("Inicio do Processo de Count...");
+            var timeBegin = DateTime.Now;
+            Console.WriteLine(string.Format( "Inicio do Processo de Count às {0}...", timeBegin.ToString("HH:mm:ss")));
             using var context = new SorteContext();
             foreach (var ms in context.Megasenas.Include(m => m.NumerosSorteados).OrderBy(e => e.DataConcurso))
             {
@@ -485,6 +495,7 @@ namespace sorte.console
                 //var flagAdd = estatistica == null;
                 //if (flagAdd) { estatistica = new EstatisticaMegasena(); }
 
+                bool flagAdd = false;
                 for (int i = 1; i <= 60; i++)
                 {
                     var estatistica = dbcontext
@@ -493,8 +504,8 @@ namespace sorte.console
                                             .FirstOrDefault();
                     if (estatistica == null)
                     {
-                        Console.WriteLine(string.Format("Processando Concurso {0}", ms.Concurso));
-
+                        Console.WriteLine(string.Format("Processando Concurso {0} - Número {1}", ms.Concurso, i));
+                        flagAdd = true;
                         dbcontext.MegasenaCounters.Add(
                             new MegasenaCounter
                             {
@@ -569,7 +580,7 @@ namespace sorte.console
                     }
 
                 }
-                dbcontext.SaveChanges(true);
+                if (flagAdd) { dbcontext.SaveChanges(true); }
 
                 //estatistica.DataConcurso = ms.DataConcurso;
                 //estatistica.QuantDez01 = megasenaDezenas.Dez01;
@@ -638,8 +649,8 @@ namespace sorte.console
 
                 //dbcontext.SaveChanges(true);
             }
-            Console.WriteLine("Finalizando o Processo de Count.");
-
+            Console.WriteLine(string.Format("Finalizando o Processo de Count, às {0}, levou {1} tempo de execução.",
+                DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Subtract(timeBegin).ToString()));
 
         }
 

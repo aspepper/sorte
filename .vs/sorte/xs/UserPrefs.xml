@@ -1,7 +1,7 @@
 ﻿<Properties GitUserInfo="UsingMD" StartupConfiguration="{8D5EDD2E-B580-4398-AF84-0A47D620717D}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="sorte.console/Program.cs">
     <Files>
-      <File FileName="sorte.console/Program.cs" Line="489" Column="1" />
+      <File FileName="sorte.console/Program.cs" Line="259" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,6 +16,8 @@
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
           <Value>Environment.OSVersion.Platform</Value>
+          <Value>timeBegin.Subtract(DateTime.Now)</Value>
+          <Value>DateTime.Now.Subtract(beginTime)</Value>
         </State>
       </Pad>
     </Pads>
