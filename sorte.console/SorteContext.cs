@@ -39,8 +39,14 @@ namespace sorte.console
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server=.\;Database=Sorte;Trusted_Connection=True;MultipleActiveResultSets=true"); // windows
-            optionsBuilder.UseSqlServer(@"Server=localhost;Database=Sorte;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=L0g1t3ch#1972;"); // Mac
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                optionsBuilder.UseSqlServer(@"Server=.\;Database=Sorte;Trusted_Connection=True;MultipleActiveResultSets=true"); // windows
+            }
+            else
+            {
+                optionsBuilder.UseSqlServer(@"Server=localhost;Database=Sorte;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=L0g1t3ch#1972;"); // Mac
+            }
         }
 
 
