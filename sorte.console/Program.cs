@@ -1,15 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.IO.Compression;
-using System.Collections.Generic;
-using System.Text;
-using HtmlAgilityPack;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Reflection.Metadata;
 
 namespace sorte.console
 {

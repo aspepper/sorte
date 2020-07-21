@@ -418,9 +418,11 @@ namespace sorte.console
             {
                 row++;
 
-                foreach (var numeroSorteado in ms.NumerosSorteados
-                                                 .Where(n => !numeros.Contains(n.Numero))
-                                                 .OrderBy(n => n.Ordem))
+                var nbToAnal = ms.NumerosSorteados
+                                 .Where(n => !numeros.Contains(n.Numero))
+                                 .OrderBy(n => n.Ordem);
+                if (nbToAnal.Count() == 0) { break; }
+                foreach (var numeroSorteado in nbToAnal)
                 {
                     var num = new List<List<int>>()
                     {
@@ -445,7 +447,8 @@ namespace sorte.console
                     pontos.Add(num);
                 }
 
-                if (row == 10) { break; }
+                if (row == 500) { break; }
+
             }
 
             int currentNum = 0;
