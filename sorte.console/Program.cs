@@ -60,9 +60,6 @@ namespace sorte.console
                         }
                     }
                     break;
-                case "count":
-                    Analytics.CountNumbers();
-                    break;
                 case "process":
                     var processPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                     processPath += barra + "extract";
@@ -73,6 +70,9 @@ namespace sorte.console
                                       .First();
 
                     LoadMega.ExtractNumbersFromFile(processFile.FullName);
+                    break;
+                case "count":
+                    Analytics.CountNumbers();
                     break;
                 case "analise":
                     Analytics.AnaliseInteligente();

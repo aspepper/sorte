@@ -88,6 +88,7 @@ namespace sorte.console
                                 record.Concurso = i;
                                 if (concursoCorrente != i)
                                 {
+                                    record = new MegasenaRecord();
                                     concursoCorrente = i;
                                 }
                                 else
@@ -192,17 +193,28 @@ namespace sorte.console
                         }
                         else
                         {
-                            if (recordMS.ArredacaoTotal != record.ArredacaoTotal) { recordMS.ArredacaoTotal = record.ArredacaoTotal; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Arrecadação Total"; }
-                            if (recordMS.Ganhadores != record.Ganhadores) { recordMS.Ganhadores = record.Ganhadores; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores"; }
-                            if (recordMS.Rateio != record.Rateio) { recordMS.Rateio = record.Rateio; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio"; }
-                            if (recordMS.GanhadoresQuina != record.GanhadoresQuina) { recordMS.GanhadoresQuina = record.GanhadoresQuina; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores Quina"; }
-                            if (recordMS.RateioQuina != record.RateioQuina) { recordMS.RateioQuina = record.RateioQuina; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio Quina"; }
-                            if (recordMS.GanhadoresQuadra != record.GanhadoresQuadra) { recordMS.GanhadoresQuadra = record.GanhadoresQuadra; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores Quadra"; }
-                            if (recordMS.RateioQuadra != record.RateioQuadra) { recordMS.RateioQuadra = record.RateioQuadra; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio Quadra"; }
-                            if (recordMS.Acumulado != record.Acumulado) { recordMS.Acumulado = record.Acumulado; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Acumulado"; }
-                            if (recordMS.ValorAcumulado != record.ValorAcumulado) { recordMS.ValorAcumulado = record.ValorAcumulado; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Valor Acumulado"; }
-                            if (recordMS.EstimativaPremio != record.EstimativaPremio) { recordMS.EstimativaPremio = record.EstimativaPremio; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Estimativa do Prêmio"; }
-                            if (recordMS.AcumuladoVirada != record.AcumuladoVirada) { recordMS.AcumuladoVirada = record.AcumuladoVirada; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Acumulado Virada"; }
+                            if (recordMS.ArredacaoTotal.HasValue && (!record.ArredacaoTotal.Equals(recordMS.ArredacaoTotal.Value))) 
+                            { recordMS.ArredacaoTotal = record.ArredacaoTotal; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Arrecadação Total"; }
+                            if (recordMS.Ganhadores.HasValue && (!record.Ganhadores.Equals(recordMS.Ganhadores.Value))) 
+                            { recordMS.Ganhadores = record.Ganhadores; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores"; }
+                            if (recordMS.Rateio.HasValue && (!record.Rateio.Equals(recordMS.Rateio.Value))) 
+                            { recordMS.Rateio = record.Rateio; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio"; }
+                            if (recordMS.GanhadoresQuina.HasValue && (recordMS.GanhadoresQuina.Value != record.GanhadoresQuina)) 
+                            { recordMS.GanhadoresQuina = record.GanhadoresQuina; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores Quina"; }
+                            if (recordMS.RateioQuina.HasValue && (recordMS.RateioQuina.Value != record.RateioQuina)) 
+                            { recordMS.RateioQuina = record.RateioQuina; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio Quina"; }
+                            if (recordMS.GanhadoresQuadra.HasValue && (recordMS.GanhadoresQuadra.Value != record.GanhadoresQuadra)) 
+                            { recordMS.GanhadoresQuadra = record.GanhadoresQuadra; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Ganhadores Quadra"; }
+                            if (recordMS.RateioQuadra.HasValue && (recordMS.RateioQuadra.Value != record.RateioQuadra)) 
+                            { recordMS.RateioQuadra = record.RateioQuadra; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Rateio Quadra"; }
+                            if (!string.IsNullOrEmpty(recordMS.Acumulado) && (recordMS.Acumulado != record.Acumulado)) 
+                            { recordMS.Acumulado = record.Acumulado; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Acumulado"; }
+                            if (recordMS.ValorAcumulado.HasValue && (recordMS.ValorAcumulado.Value != record.ValorAcumulado)) 
+                            { recordMS.ValorAcumulado = record.ValorAcumulado; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Valor Acumulado"; }
+                            if (recordMS.EstimativaPremio.HasValue && (recordMS.EstimativaPremio.Value != record.EstimativaPremio)) 
+                            { recordMS.EstimativaPremio = record.EstimativaPremio; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Estimativa do Prêmio"; }
+                            if (recordMS.AcumuladoVirada.HasValue && (recordMS.AcumuladoVirada.Value != record.AcumuladoVirada)) 
+                            { recordMS.AcumuladoVirada = record.AcumuladoVirada; UpdFlag = true; messageProcess += (messageProcess.Length > 0 ? ", " : "") + "Atualizando Acumulado Virada"; }
                         }
 
                         foreach (var cds in record.Cidades)
@@ -233,10 +245,6 @@ namespace sorte.console
 
                         count++;
                         cols = 0;
-                        if (cols <= 10)
-                        {
-                            record = new MegasenaRecord();
-                        }
                         maxCols = 21;
                     }
                 }
