@@ -1,8 +1,8 @@
 ﻿<Properties GitUserInfo="UsingMD" StartupConfiguration="{8D5EDD2E-B580-4398-AF84-0A47D620717D}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="sorte.console/Analytics.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sorte.console/Program.cs">
     <Files>
-      <File FileName="sorte.console/Program.cs" Line="1" Column="1" />
-      <File FileName="sorte.console/Analytics.cs" Line="450" Column="43" />
+      <File FileName="sorte.console/Program.cs" Line="77" Column="30" />
+      <File FileName="sorte.console/Analytics.cs" Line="313" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
