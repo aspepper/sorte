@@ -85,7 +85,6 @@ namespace sorte.console
                         case 0: // Concurso
                             if (int.TryParse(text, out i))
                             {
-                                record.Concurso = i;
                                 if (concursoCorrente != i)
                                 {
                                     record = new MegasenaRecord();
@@ -100,6 +99,7 @@ namespace sorte.console
                             {
                                 i = 0;
                             }
+                            record.Concurso = concursoCorrente;
                             break;
                         //Data Sorteio
                         case 1: if (DateTime.TryParse(text, out DateTime dt)) { record.DataConcurso = dt; } break;
