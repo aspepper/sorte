@@ -43,6 +43,7 @@ namespace sorte.console
                             Directory.CreateDirectory(extractPath);
                         }
 
+                        //process
                         foreach (ZipArchiveEntry entry in archive.Entries)
                         {
                             if (entry.FullName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase))

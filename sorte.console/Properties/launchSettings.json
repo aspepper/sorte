@@ -2,7 +2,7 @@
   "profiles": {
     "sorte.console": {
       "commandName": "Project",
-      "commandLineArgs": "process"
+      "commandLineArgs": "analise"
     }
   }
 }
