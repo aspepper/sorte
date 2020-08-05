@@ -150,7 +150,9 @@ SELECT	TOP 10
 		MS.[Acumulado],
 		MS.[ValorAcumulado],
 		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [Cidade],
-		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [UF]
+		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [UF],
+		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<> (SELECT TOP 1 CID.[Id] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) ORDER BY CID.[Id] DESC) AS [Cidade_2],
+		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<> (SELECT TOP 1 CID.[Id] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) ORDER BY CID.[Id] DESC) AS [UF_2]
 FROM	[dbo].[Megasenas] MS
 --WHERE	MS.[DataConcurso] = '2020-07-16 00:00:00.0000000'
 ORDER	BY MS.[DataConcurso] DESC;
@@ -158,6 +160,7 @@ ORDER	BY MS.[DataConcurso] DESC;
 
 SELECT * FROM [dbo].[MegasenaCidades];
 
+SELECT C.[Cidade], C.[UF], COUNT(1) As QTD FROM [dbo].[MegasenaCidades] C WHERE C.[Cidade]<>'' GROUP BY C.[Cidade], C.[UF] ORDER BY QTD DESC;
 
 
 
