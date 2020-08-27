@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace sorte.console
 {
@@ -407,6 +408,13 @@ namespace sorte.console
         static public void AnaliseInteligente()
         {
             var pontos = new List<List<List<int>>>();
+
+            using var t = new TransactionScope(TransactionScopeOption.Required,
+                                                new TransactionOptions
+                                                {
+                                                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                                                });
+
             using var contextDb = new SorteContext();
             var row = 0;
 

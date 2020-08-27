@@ -47,6 +47,7 @@ namespace sorte.console
             {
                 optionsBuilder.UseSqlServer(@"Server=localhost;Database=Sorte;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=L0g1t3ch#1972;"); // Mac
             }
+            
         }
 
 

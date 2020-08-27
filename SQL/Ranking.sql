@@ -1,4 +1,4 @@
-﻿SELECT	TOP 50
+﻿SELECT	TOP 10
 		MS.[Concurso],
 		CONVERT(VARCHAR(10),MS.[DataConcurso],103) AS [DataConcurso],
 		CASE DATEPART(DW, MS.[DataConcurso]) 
@@ -20,17 +20,17 @@
 		FORMAT(MS.[Rateio], 'N', 'pt-BR') AS [Rateio],
 		MS.[Acumulado],
 		FORMAT(MS.[ValorAcumulado], 'N', 'pt-BR') AS [ValorAcumulado],
-		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [Cidade Ganh.01],
-		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [UF Ganh.01],
-		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<> (SELECT TOP 1 CID.[Id] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) ORDER BY CID.[Id] DESC) AS [Cidade Ganh.02],
-		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<> (SELECT TOP 1 CID.[Id] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) ORDER BY CID.[Id] DESC) AS [UF Ganh.02]
+		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [Cidade_Rat_01],
+		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [UF_Rat_01],
+		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<>(SELECT TOP 1 CID1.[Id] FROM [dbo].[MegasenaCidades] CID1 WHERE CID1.[MegaSenaId] = MS.[Id] ORDER BY CID1.[Id] DESC) ORDER BY CID.[Id] DESC) AS [Cidade_Rat_02],
+		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] AND CID.[Id]<>(SELECT TOP 1 CID1.[Id] FROM [dbo].[MegasenaCidades] CID1 WHERE CID1.[MegaSenaId] = MS.[Id] ORDER BY CID1.[Id] DESC) ORDER BY CID.[Id] DESC) AS [UF_Rat_02]
 FROM	[dbo].[Megasenas] MS
 --WHERE	MS.[DataConcurso] = '2020-07-16 00:00:00.0000000'
 ORDER	BY MS.[DataConcurso] DESC;
 ;
 
 
-
+dbcc freeproccache;
 
 SELECT 	C.[Cidade], 
 		C.[UF], 
@@ -45,36 +45,6 @@ ORDER BY QTD DESC
 
 
 
-
-
-SELECT	TOP 10
-		MS.[Concurso],
-		CONVERT(VARCHAR(10),MS.[DataConcurso],103) AS [DataConcurso],
-		CASE DATEPART(DW, MS.[DataConcurso]) 
-		WHEN 1 THEN 'Domingo'
-		WHEN 2 THEN 'Segunda'
-		WHEN 3 THEN 'Terça'
-		WHEN 4 THEN 'Quarta'
-		WHEN 5 THEN 'Quinta'
-		WHEN 6 THEN 'Sexta'
-		WHEN 7 THEN 'Sábado'
-		END [DayOfWeek],
-		(SELECT SN1.[Numero] FROM [dbo].[Sorteados] SN1 WHERE SN1.[MegaSenaId] = MS.[Id] AND SN1.[Ordem]=1) AS N1,
-		(SELECT SN2.[Numero] FROM [dbo].[Sorteados] SN2 WHERE SN2.[MegaSenaId] = MS.[Id] AND SN2.[Ordem]=2) AS N2,
-		(SELECT SN3.[Numero] FROM [dbo].[Sorteados] SN3 WHERE SN3.[MegaSenaId] = MS.[Id] AND SN3.[Ordem]=3) AS N3,
-		(SELECT SN4.[Numero] FROM [dbo].[Sorteados] SN4 WHERE SN4.[MegaSenaId] = MS.[Id] AND SN4.[Ordem]=4) AS N4,
-		(SELECT SN5.[Numero] FROM [dbo].[Sorteados] SN5 WHERE SN5.[MegaSenaId] = MS.[Id] AND SN5.[Ordem]=5) AS N5,
-		(SELECT SN6.[Numero] FROM [dbo].[Sorteados] SN6 WHERE SN6.[MegaSenaId] = MS.[Id] AND SN6.[Ordem]=6) AS N6,
-		MS.[Ganhadores],
-		FORMAT(MS.[Rateio], 'N', 'pt-BR') AS [Rateio],
-		MS.[Acumulado],
-		FORMAT(MS.[ValorAcumulado], 'N', 'pt-BR') AS [ValorAcumulado],
-		(SELECT TOP 1 CID.[Cidade] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [Cidade],
-		(SELECT TOP 1 CID.[UF] FROM [dbo].[MegasenaCidades] CID WHERE CID.[MegaSenaId] = MS.[Id] ORDER BY CID.[Id] DESC) AS [UF]
-FROM	[dbo].[Megasenas] MS
---WHERE	MS.[DataConcurso] = '2020-07-16 00:00:00.0000000'
-ORDER	BY MS.[DataConcurso] DESC;
-;
 
 
 -- 10 mais 
@@ -150,6 +120,8 @@ FROM [dbo].[Megasenas] MS
 JOIN [dbo].[Sorteados] N ON N.[MegaSenaId] = MS.[Id] 
 WHERE DataConcurso = '2020-07-22 00:00:00.0000000';
 
+
+
 SELECT	MC.[DataConcurso],
 		MC.[Numero],
 		MC.[Quantidade],
@@ -166,6 +138,8 @@ GROUP BY
 		N.[Ordem]
 ORDER BY MC.[DataConcurso], MC.[Quantidade] DESC, N.[Ordem]
 ;
+
+
 
 SELECT * FROM [dbo].[MegasenaCounters] MC 
 WHERE MC.[DataConcurso] = '2020-07-22 00:00:00.0000000' ORDER BY MC.[Quantidade] DESC;
@@ -231,7 +205,7 @@ SELECT * FROM [dbo].[MegasenaCidades];
 
 
 
-
+SELECT * FROM [dbo].[Sorteados]
 
 SELECT * FROM [dbo].[MegasenaCidades];
 
