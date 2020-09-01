@@ -30,7 +30,7 @@ ORDER	BY MS.[DataConcurso] DESC;
 ;
 
 
-dbcc freeproccache;
+DBCC freeproccache;
 
 SELECT 	C.[Cidade], 
 		C.[UF], 
